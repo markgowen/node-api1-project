@@ -23,15 +23,15 @@ Database access will be done using the `db.js` file included inside the `data` f
 - [x] `find()`: calling find returns a promise that resolves to an array of all the users contained in the database.
 - [x] `findById()`: this method expects an `id` as it's only parameter and returns the user corresponding to the `id` provided or an empty array if no user with that `id` is found.
 - [x] `insert()`: calling insert passing it a user object will add it to the database and return an object with the `id` of the inserted user. The object looks like this: `{ id: 123 }`.
-- [ ] `update()`: accepts two arguments, the first is the `id` of the user to update and the second is an object with the `changes` to apply. It returns the count of updated records. If the count is 1 it means the record was updated correctly.
+- [x] `update()`: accepts two arguments, the first is the `id` of the user to update and the second is an object with the `changes` to apply. It returns the count of updated records. If the count is 1 it means the record was updated correctly.
 - [x] `remove()`: the remove method accepts an `id` as it's first parameter and upon successfully deleting the user from the database it returns the number of records deleted.
 
 Now that we have a way to add, update, remove and retrieve data from the provided database, it is time to work on the API.
 
 ### Start the API and Implement Requirements
 
-- [ ] To start the server, type `npm run server` from the root folder (where the _package.json_ file is). The server is configured to restart automatically as you make changes.
-- [ ] Add the code necessary to implement the API requirements.
+- [x] To start the server, type `npm run server` from the root folder (where the _package.json_ file is). The server is configured to restart automatically as you make changes.
+- [x] Add the code necessary to implement the API requirements.
 - **Test the API using _Postman_ as you work through the exercises.**
 
 ### User Schema
@@ -61,7 +61,7 @@ Users in the database conform to the following object structure:
 
 #### Endpoint Specifications
 
-When the client makes a `POST` request to `/api/users`:
+[x] When the client makes a `POST` request to `/api/users`:
 
 - If the request body is missing the `name` or `bio` property:
 
@@ -80,14 +80,14 @@ When the client makes a `POST` request to `/api/users`:
   - respond with HTTP status code `500` (Server Error).
   - return the following JSON object: `{ error: "There was an error while saving the user to the database" }`.
 
-When the client makes a `GET` request to `/api/users`:
+[x] When the client makes a `GET` request to `/api/users`:
 
 - If there's an error in retrieving the _users_ from the database:
   - cancel the request.
   - respond with HTTP status code `500`.
   - return the following JSON object: `{ error: "The users information could not be retrieved." }`.
 
-When the client makes a `GET` request to `/api/users/:id`:
+[x] When the client makes a `GET` request to `/api/users/:id`:
 
 - If the _user_ with the specified `id` is not found:
 
@@ -99,7 +99,7 @@ When the client makes a `GET` request to `/api/users/:id`:
   - respond with HTTP status code `500`.
   - return the following JSON object: `{ error: "The user information could not be retrieved." }`.
 
-When the client makes a `DELETE` request to `/api/users/:id`:
+[x] When the client makes a `DELETE` request to `/api/users/:id`:
 
 - If the _user_ with the specified `id` is not found:
 
@@ -111,7 +111,7 @@ When the client makes a `DELETE` request to `/api/users/:id`:
   - respond with HTTP status code `500`.
   - return the following JSON object: `{ error: "The user could not be removed" }`.
 
-When the client makes a `PUT` request to `/api/users/:id`:
+[x] When the client makes a `PUT` request to `/api/users/:id`:
 
 - If the _user_ with the specified `id` is not found:
 

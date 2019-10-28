@@ -16,7 +16,7 @@ server.get('/users', (req, res) => {
     .catch(err => {
       console.log('error', err);
       res.status(500).json({
-        error: 'failed to GET users from db'
+        error: 'The users information could not be retrieved.'
       });
     });
 });
@@ -26,12 +26,18 @@ server.get('/users/:id', (req, res) => {
   const id = req.params.id;
   db.findById(id)
     .then(user => {
+      if (!user) {
+        res
+          .status(404)
+          .json({ message: 'The user with the specified ID does not exist.' });
+        return;
+      }
       res.status(200).json(user);
     })
     .catch(err => {
       console.log('error', err);
       res.status(500).json({
-        error: `failed to GET user with ${id} from db`
+        error: `The user information could not be retrieved.`
       });
     });
 });
@@ -49,8 +55,11 @@ server.post('/users', (req, res) => {
   console.log('user', user);
 
   db.insert(user)
-    .then(user => {
-      res.status(201).json(user);
+    .then(id => {
+      console.log(id.id);
+      db.findById(id.id).then(user => {
+        res.status(201).json(user);
+      });
     })
     .catch(err => {
       console.log('error', err);
@@ -61,7 +70,35 @@ server.post('/users', (req, res) => {
 });
 
 // UPDATE a user
-server.put('/users', (req, res) => {});
+server.put('/users/:id', (req, res) => {
+  if (!req.body.name || !req.body.bio) {
+    res.status(400).json({
+      errorMessage: 'Please provide name and bio for the user'
+    });
+    return;
+  }
+  const user = req.body;
+  const id = req.params.id;
+
+  db.update(id, user)
+    .then(user => {
+      if (!user) {
+        res
+          .status(404)
+          .json({ message: 'The user with the specified ID does not exist.' });
+        return;
+      }
+      db.findById(id).then(user => {
+        res.status(200).json(user);
+      });
+    })
+    .catch(err => {
+      console.log('error', err);
+      res.status(500).json({
+        error: 'The user information could not be modified.'
+      });
+    });
+});
 
 // DELETE a user
 server.delete('/users/:id', (req, res) => {
@@ -69,12 +106,18 @@ server.delete('/users/:id', (req, res) => {
 
   db.remove(id)
     .then(count => {
+      if (!count) {
+        res
+          .status(404)
+          .json({ message: 'The user with the specified ID does not exist.' });
+        return;
+      }
       res.status(200).json({ message: `user with id ${id} deleted` });
     })
     .catch(err => {
       console.log('error', err);
       res.status(500).json({
-        error: 'failed to DELETE user from db'
+        error: 'The user could not be removed'
       });
     });
 });
