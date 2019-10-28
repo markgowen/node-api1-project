@@ -1,7 +1,7 @@
 // implement your API here
 const express = require('express');
 
-const db = require('./data/db.js')
+const db = require('./data/db.js');
 
 const server = express();
 
@@ -23,9 +23,10 @@ server.get('/users', (req, res) => {
 
 // Get to /users that returns a user by id
 server.get('/users/:id', (req, res) => {
+  const id = req.params.id;
   db.findById(id)
     .then(user => {
-      res.status(200).json(users);
+      res.status(200).json(user);
     })
     .catch(err => {
       console.log('error', err);
@@ -35,25 +36,34 @@ server.get('/users/:id', (req, res) => {
     });
 });
 
-// POST to /hubs
+// POST to /users
 server.post('/users', (req, res) => {
-  const userInfo = req.body;
+  if (!req.body.name || !req.body.bio) {
+    res.status(400).json({
+      errorMessage: 'Please provide name and bio for the user'
+    });
+    return;
+  }
+  const user = req.body;
 
-  console.log('userInfo', userInfo);
+  console.log('user', user);
 
-  db.add(userInfo)
+  db.insert(user)
     .then(user => {
       res.status(201).json(user);
     })
     .catch(err => {
       console.log('error', err);
       res.status(500).json({
-        error: 'failed to ADD user to the db'
+        error: 'There was an error while saving the user to the database'
       });
     });
 });
 
-// DELETE a hub
+// UPDATE a user
+server.put('/users', (req, res) => {});
+
+// DELETE a user
 server.delete('/users/:id', (req, res) => {
   const id = req.params.id;
 
